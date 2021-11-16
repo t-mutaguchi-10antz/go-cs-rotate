@@ -2,7 +2,7 @@
 
 ## badges
 
-[![Lint & UnitTest](https://github.com/t-mutaguchi-10antz/go-s3-rotate/workflows/Lint%20&%20UnitTest/badge.svg)](https://github.com/t-mutaguchi-10antz/go-s3-rotate/actions)
+[![Lint & UnitTest](https://github.com/t-mutaguchi-10antz/go-s3-rotate/actions/workflows/lint-and-unittest.yaml/badge.svg)](https://github.com/t-mutaguchi-10antz/go-s3-rotate/actions/workflows/lint-and-unittest.yaml)
 
 ## descriptions
 
