@@ -7,8 +7,8 @@ on:
       - main
   pull_request:
 jobs:
-  process:
-    name: process
+  lint-and-unittest:
+    name: Lint & UnitTest
     strategy:
       matrix:
         go-version: [1.16.x]
