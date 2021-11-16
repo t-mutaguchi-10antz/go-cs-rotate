@@ -1,4 +1,4 @@
-name: check
+name: Lint & UnitTest
 on:
   push:
     tags:
@@ -7,8 +7,8 @@ on:
       - main
   pull_request:
 jobs:
-  check:
-    name: check
+  lint-and-unittest:
+    name: lint-and-unittest
     strategy:
       matrix:
         go-version: [1.16.x]
@@ -28,5 +28,5 @@ jobs:
         with:
           version: latest
 
-      - name: Unit test
+      - name: UnitTest
         run: go test -v ./...
