@@ -1,4 +1,6 @@
-# Goal
+# Requirements Definition
+
+## Goal
 
 自然数を元に順番 ( 小さい or 大きい ) でソートした上で上位 n 件を残す処理
 
