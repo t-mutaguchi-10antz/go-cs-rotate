@@ -1,9 +1,9 @@
-# go-s3-rotate
+# Cloud Storage Rotate
 
-## badges
+## Badges
 
-[![Lint & UnitTest](https://github.com/t-mutaguchi-10antz/go-s3-rotate/actions/workflows/lint-and-unittest.yaml/badge.svg)](https://github.com/t-mutaguchi-10antz/go-s3-rotate/actions/workflows/lint-and-unittest.yaml)
+[![Lint & UnitTest](https://github.com/t-mutaguchi-10antz/go-cs-rotate/actions/workflows/lint-and-unittest.yaml/badge.svg)](https://github.com/t-mutaguchi-10antz/go-cs-rotate/actions/workflows/lint-and-unittest.yaml)
 
-## descriptions
+## Descriptions
 
-条件に合わせて S3 上のリソースを削除
+条件に合わせてクラウドストレージ上のリソースを削除
