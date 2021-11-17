@@ -12,14 +12,15 @@ type Object struct {
 }
 
 func NewObject(url string) (Object, error) {
-	o := Object{}
-
-	urlValue, err := NewURL(url)
+	urlValue, err := URL(url)
 	if err != nil {
-		return o, fmt.Errorf("Failed to create object struct: %w", err)
+		return Object{}, fmt.Errorf("Failed to create object struct: %w", err)
 	}
 
-	o.URL = urlValue
-
-	return o, nil
+	return Object{
+		URL:    urlValue,
+		Bucket: urlValue.Bucket(),
+		Prefix: urlValue.Prefix(),
+		Key:    urlValue.Key(),
+	}, nil
 }

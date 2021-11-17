@@ -8,7 +8,7 @@ import (
 
 type url string
 
-func NewURL(v string) (url, error) {
+func URL(v string) (url, error) {
 	u := url(v)
 
 	if err := validator.CheckValue(&u, "url"); err != nil {
@@ -16,4 +16,16 @@ func NewURL(v string) (url, error) {
 	}
 
 	return u, nil
+}
+
+func (u url) Bucket() string {
+	return ""
+}
+
+func (u url) Prefix() string {
+	return ""
+}
+
+func (u url) Key() string {
+	return ""
 }

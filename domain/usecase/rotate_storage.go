@@ -8,17 +8,17 @@ import (
 )
 
 func (u usecase) RotateStorage(ctx context.Context, url string, quantity uint, order string) error {
-	urlValue, err := model.NewURL(url)
+	urlValue, err := model.URL(url)
 	if err != nil {
 		return fmt.Errorf("Failed to rorate storage: %w", err)
 	}
 
-	qtyValue, err := model.NewQuantity(quantity)
+	qtyValue, err := model.Quantity(quantity)
 	if err != nil {
 		return fmt.Errorf("Failed to rorate storage: %w", err)
 	}
 
-	orderValue, err := model.NewOrder(order)
+	orderValue, err := model.Order(order)
 	if err != nil {
 		return fmt.Errorf("Failed to rorate storage: %w", err)
 	}

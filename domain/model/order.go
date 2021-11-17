@@ -11,7 +11,7 @@ const (
 	OrderDesc = order("desc")
 )
 
-func NewOrder(v string) (order, error) {
+func Order(v string) (order, error) {
 	o := order(v)
 	switch o {
 	case OrderAsc, OrderDesc:

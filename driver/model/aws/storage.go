@@ -39,8 +39,11 @@ func (s storage) List(ctx context.Context, options ...model.ListOption) ([]model
 		log.Printf("AWS S3 List objects %s", spew.Sdump(o))
 	}
 
+	bucket := o.URL.Bucket()
+	prefix := o.URL.Prefix()
 	params := &s3.ListObjectsInput{
-		// Bucket: ,
+		Bucket: &bucket,
+		Prefix: &prefix,
 	}
 	optFns := []func(*s3.Options){}
 	output, err := s.client.ListObjects(ctx, params, optFns...)
