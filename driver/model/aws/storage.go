@@ -10,7 +10,6 @@ import (
 	"github.com/davecgh/go-spew/spew"
 
 	"github.com/t-mutaguchi-10antz/cs-rotate/domain/model"
-	"github.com/t-mutaguchi-10antz/cs-rotate/domain/primitive"
 )
 
 var _ model.Storage = storage{}
@@ -33,21 +32,23 @@ func NewStorage(ctx context.Context, verbose bool) (model.Storage, error) {
 	return s, nil
 }
 
-func (s storage) List(ctx context.Context, options ...primitive.ListOption) ([]model.Resource, error) {
-	o := primitive.NewListOptions(options...)
+func (s storage) List(ctx context.Context, options ...model.ListOption) ([]model.Object, error) {
+	o := model.NewListOptions(options...)
 
 	if s.verbose {
-		log.Printf("AWS S3 List resources %s", spew.Sdump(o))
+		log.Printf("AWS S3 List objects %s", spew.Sdump(o))
 	}
 
-	params := &s3.ListObjectsInput{}
+	params := &s3.ListObjectsInput{
+		// Bucket: ,
+	}
 	optFns := []func(*s3.Options){}
 	output, err := s.client.ListObjects(ctx, params, optFns...)
 	if err != nil {
-		return []model.Resource{}, fmt.Errorf("Failed to list AWS S3 resources: %w", err)
+		return []model.Object{}, fmt.Errorf("Failed to list AWS S3 objects: %w", err)
 	}
 
-	resources := []model.Resource{}
+	objects := []model.Object{}
 	for _, content := range output.Contents {
 		url := ""
 		if output.Prefix != nil {
@@ -55,17 +56,17 @@ func (s storage) List(ctx context.Context, options ...primitive.ListOption) ([]m
 		} else {
 			url = fmt.Sprintf("s3://%s/%s", *output.Name, *content.Key)
 		}
-		resource, err := model.NewResource(url)
+		object, err := model.NewObject(url)
 		if err != nil {
-			return []model.Resource{}, fmt.Errorf("Failed to list AWS S3 resources: %w", err)
+			return []model.Object{}, fmt.Errorf("Failed to list AWS S3 objects: %w", err)
 		}
-		resources = append(resources, resource)
+		objects = append(objects, object)
 	}
 
-	return resources, nil
+	return objects, nil
 }
 
-func (s storage) Delete(ctx context.Context, resources []model.Resource) error {
+func (s storage) Delete(ctx context.Context, objects []model.Object) error {
 	// s.client.DeleteObjects(ctx)
 
 	return nil

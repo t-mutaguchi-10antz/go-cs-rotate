@@ -4,21 +4,26 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/t-mutaguchi-10antz/cs-rotate/domain/primitive"
+	"github.com/t-mutaguchi-10antz/cs-rotate/domain/model"
 )
 
-func (u usecase) RotateStorage(ctx context.Context, order string, quantity uint) error {
-	o, err := primitive.NewOrder(order)
+func (u usecase) RotateStorage(ctx context.Context, url string, quantity uint, order string) error {
+	urlValue, err := model.NewURL(url)
 	if err != nil {
 		return fmt.Errorf("Failed to rorate storage: %w", err)
 	}
 
-	q, err := primitive.NewQuantity(quantity)
+	qtyValue, err := model.NewQuantity(quantity)
 	if err != nil {
 		return fmt.Errorf("Failed to rorate storage: %w", err)
 	}
 
-	resources, err := u.Model().Storage().List(ctx, o, q)
+	orderValue, err := model.NewOrder(order)
+	if err != nil {
+		return fmt.Errorf("Failed to rorate storage: %w", err)
+	}
+
+	resources, err := u.Model().Storage().List(ctx, urlValue, qtyValue, orderValue)
 	if err != nil {
 		return fmt.Errorf("Failed to rorate storage: %w", err)
 	}

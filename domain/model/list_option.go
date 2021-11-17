@@ -1,10 +1,11 @@
-package primitive
+package model
 
 type ListOption interface {
 	Apply(*ListOptions)
 }
 
 type ListOptions struct {
+	URL      *url
 	Order    *order
 	Quantity *quantity
 }
@@ -18,6 +19,11 @@ func NewListOptions(options ...ListOption) ListOptions {
 		option.Apply(&opts)
 	}
 	return opts
+}
+
+func (o url) Apply(options *ListOptions) {
+	v := o
+	options.URL = &v
 }
 
 func (o order) Apply(options *ListOptions) {

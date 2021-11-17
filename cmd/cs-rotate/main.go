@@ -13,9 +13,10 @@ import (
 )
 
 var args struct {
-	Verbose  bool   `short:"v" long:"verbose" description:"verbose"`
+	URL      string `short:"u" long:"url" description:"url" required:"true" validate:"url"`
 	Quantity uint   `short:"q" long:"quantity" description:"quantity" required:"true" validate:"gt=0"`
 	Order    string `short:"o" long:"order" default:"desc" description:"order"`
+	Verbose  bool   `short:"v" long:"verbose" description:"verbose"`
 }
 
 func init() {
@@ -39,7 +40,7 @@ func main() {
 	model := model.NewModel(storage)
 	usecase := usecase.NewUsecase(model)
 
-	if err := usecase.RotateStorage(ctx, args.Order, args.Quantity); err != nil {
+	if err := usecase.RotateStorage(ctx, args.URL, args.Quantity, args.Order); err != nil {
 		log.Fatal(err)
 	}
 }

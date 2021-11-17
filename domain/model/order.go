@@ -1,4 +1,4 @@
-package primitive
+package model
 
 import (
 	"fmt"
@@ -17,6 +17,6 @@ func NewOrder(v string) (order, error) {
 	case OrderAsc, OrderDesc:
 		return o, nil
 	default:
-		return order(""), fmt.Errorf("Invalid order")
+		return order(""), fmt.Errorf("Failed to create order value: Invalid value")
 	}
 }
