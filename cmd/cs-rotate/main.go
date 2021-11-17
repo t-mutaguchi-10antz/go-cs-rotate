@@ -8,16 +8,20 @@ import (
 	"github.com/t-mutaguchi-10antz/cs-rotate/adapter/model/aws"
 	"github.com/t-mutaguchi-10antz/cs-rotate/domain/model"
 	"github.com/t-mutaguchi-10antz/cs-rotate/domain/usecase"
+	"github.com/t-mutaguchi-10antz/cs-rotate/validator"
 )
 
 var args struct {
-	Quantity uint   `short:"q" long:"quantity" description:"quantity" required:"true"`
+	Quantity uint   `short:"q" long:"quantity" description:"quantity" required:"true" validate:"gt=0"`
 	Order    string `short:"o" long:"order" description:"order"`
 }
 
 func init() {
-	_, err := flags.Parse(&args)
-	if err != nil {
+	if _, err := flags.Parse(&args); err != nil {
+		log.Fatal(err)
+	}
+
+	if err := validator.Check(&args); err != nil {
 		log.Fatal(err)
 	}
 }
