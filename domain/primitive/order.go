@@ -6,7 +6,7 @@ import (
 
 type order string
 
-var (
+const (
 	OrderAsc  = order("asc")
 	OrderDesc = order("desc")
 )
