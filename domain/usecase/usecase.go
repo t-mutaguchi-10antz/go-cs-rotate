@@ -8,7 +8,7 @@ type Usecase interface {
 	Model() model.Model
 }
 
-var _ Usecase = &usecase{}
+var _ Usecase = usecase{}
 
 type usecase struct {
 	model model.Model

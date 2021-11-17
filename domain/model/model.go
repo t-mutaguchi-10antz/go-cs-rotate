@@ -4,7 +4,7 @@ type Model interface {
 	Storage() Storage
 }
 
-var _ Model = &model{}
+var _ Model = model{}
 
 type model struct {
 	storage Storage

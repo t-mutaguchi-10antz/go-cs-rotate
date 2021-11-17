@@ -12,6 +12,7 @@ import (
 )
 
 var args struct {
+	Verbose  bool   `short:"v" long:"verbose" description:"verbose"`
 	Quantity uint   `short:"q" long:"quantity" description:"quantity" required:"true" validate:"gt=0"`
 	Order    string `short:"o" long:"order" description:"order"`
 }
@@ -27,9 +28,15 @@ func init() {
 }
 
 func main() {
-	storage := aws.NewStorage()
-	model := model.NewModel(storage)
+	storage, err := aws.NewStorage()
+	if err != nil {
+		log.Fatal(err)
+	}
 
+	model := model.NewModel(storage)
 	usecase := usecase.NewUsecase(model)
-	usecase.RotateStorage()
+
+	if err := usecase.RotateStorage(); err != nil {
+		log.Fatal(err)
+	}
 }
