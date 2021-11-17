@@ -7,6 +7,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/davecgh/go-spew/spew"
 
 	"github.com/t-mutaguchi-10antz/cs-rotate/domain/model"
 	"github.com/t-mutaguchi-10antz/cs-rotate/domain/primitive"
@@ -35,7 +36,9 @@ func NewStorage(ctx context.Context, verbose bool) (model.Storage, error) {
 func (s storage) List(ctx context.Context, options ...primitive.ListOption) ([]model.Resource, error) {
 	o := primitive.NewListOptions(options...)
 
-	log.Printf("List(%+v)", o)
+	if s.verbose {
+		log.Printf("AWS S3 List resources %s", spew.Sdump(o))
+	}
 
 	params := &s3.ListObjectsInput{}
 	optFns := []func(*s3.Options){}
