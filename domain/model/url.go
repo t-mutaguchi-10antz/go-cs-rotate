@@ -16,7 +16,7 @@ type URL struct {
 func NewURL(v string) (URL, error) {
 	u := URL{}
 
-	if err := validator.Check(&u); err != nil {
+	if err := validator.CheckStruct(&u); err != nil {
 		return u, fmt.Errorf("Failed to create URL struct: %w", err)
 	}
 

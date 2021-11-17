@@ -9,14 +9,14 @@ import (
 
 var validate = validator.New()
 
-func Check(src interface{}) error {
+func CheckStruct(src interface{}) error {
 	err := validate.Struct(src)
 	if err == nil {
 		return nil
 	}
 
 	if _, ok := err.(*validator.InvalidValidationError); ok {
-		return fmt.Errorf("Invalid: %w", err)
+		return fmt.Errorf("Invalid struct: %w", err)
 	}
 
 	errs := []string{}
@@ -34,5 +34,23 @@ func Check(src interface{}) error {
 		errs = append(errs, err.Error())
 	}
 
-	return fmt.Errorf("Invalid: %s", strings.Join(errs, " "))
+	return fmt.Errorf("Invalid struct: %s", strings.Join(errs, " "))
+}
+
+func CheckValue(src interface{}, tag string) error {
+	err := validate.Var(src, tag)
+	if err == nil {
+		return nil
+	}
+
+	if _, ok := err.(*validator.InvalidValidationError); ok {
+		return fmt.Errorf("Invalid value: %w", err)
+	}
+
+	errs := []string{}
+	for _, err := range err.(validator.ValidationErrors) {
+		errs = append(errs, err.Error())
+	}
+
+	return fmt.Errorf("Invalid value: %s", strings.Join(errs, " "))
 }

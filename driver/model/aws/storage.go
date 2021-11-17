@@ -3,23 +3,26 @@ package aws
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 
 	"github.com/t-mutaguchi-10antz/cs-rotate/domain/model"
+	"github.com/t-mutaguchi-10antz/cs-rotate/domain/primitive"
 )
 
 var _ model.Storage = storage{}
 
 type storage struct {
-	client *s3.Client
+	verbose bool
+	client  *s3.Client
 }
 
-func NewStorage() (model.Storage, error) {
-	s := storage{}
+func NewStorage(ctx context.Context, verbose bool) (model.Storage, error) {
+	s := storage{verbose: verbose}
 
-	cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion("us-west-2"))
+	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion("us-west-2"))
 	if err != nil {
 		return s, fmt.Errorf("Failed to create storage struct: %w", err)
 	}
@@ -29,7 +32,11 @@ func NewStorage() (model.Storage, error) {
 	return s, nil
 }
 
-func (s storage) List(ctx context.Context) ([]model.Resource, error) {
+func (s storage) List(ctx context.Context, options ...primitive.ListOption) ([]model.Resource, error) {
+	o := primitive.NewListOptions(options...)
+
+	log.Printf("List(%+v)", o)
+
 	params := &s3.ListObjectsInput{}
 	optFns := []func(*s3.Options){}
 	output, err := s.client.ListObjects(ctx, params, optFns...)
