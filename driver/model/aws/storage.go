@@ -67,12 +67,14 @@ func (s storage) prefixes(ctx context.Context, params model.RotateParams) (delet
 	}
 
 	prefixes := []string{}
-	s.paginate(ctx, bucket, prefix, "/", func(page *s3.ListObjectsV2Output) error {
+	if err := s.paginate(ctx, bucket, prefix, "/", func(page *s3.ListObjectsV2Output) error {
 		for _, c := range page.CommonPrefixes {
 			prefixes = append(prefixes, *c.Prefix)
 		}
 		return nil
-	})
+	}); err != nil {
+		return nil, nil, fmt.Errorf("failed to get prefixes: %w", err)
+	}
 
 	sort.SliceStable(prefixes, func(i, j int) bool {
 		if params.Order == model.OrderAsc {
@@ -99,7 +101,7 @@ func (s storage) prefixes(ctx context.Context, params model.RotateParams) (delet
 
 func (s storage) delete(ctx context.Context, bucket string, prefixes []string) error {
 	for _, prefix := range prefixes {
-		s.paginate(ctx, bucket, prefix, "", func(page *s3.ListObjectsV2Output) error {
+		if err := s.paginate(ctx, bucket, prefix, "", func(page *s3.ListObjectsV2Output) error {
 			objects := []types.ObjectIdentifier{}
 			for _, content := range page.Contents {
 				if s.verbose {
@@ -120,7 +122,9 @@ func (s storage) delete(ctx context.Context, bucket string, prefixes []string) e
 			}
 
 			return nil
-		})
+		}); err != nil {
+			return fmt.Errorf("failed to delete: %w", err)
+		}
 	}
 
 	return nil
