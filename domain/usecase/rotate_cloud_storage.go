@@ -7,7 +7,7 @@ import (
 	"github.com/t-mutaguchi-10antz/cs-rotate/domain/model"
 )
 
-func (u usecase) RotateCloudStorage(ctx context.Context, url string, quantity uint, order string) error {
+func (u usecase) RotateStorage(ctx context.Context, url string, quantity uint, order string) error {
 	// 外部からの入力を domain primitive な値に変換して安全性を担保する
 	urlVal, err := model.WithURL(url)
 	if err != nil {
@@ -22,18 +22,11 @@ func (u usecase) RotateCloudStorage(ctx context.Context, url string, quantity ui
 		return fmt.Errorf("failed to rorate storage: %w", err)
 	}
 
-	// 条件に合致するクラウドストレージ上のリソースを走査・削除する
-	var objects []model.Object
-	options := []model.ListOption{urlVal, qtyVal, orderVal}
-	for options != nil {
-		objects, options, err = u.Model().Storage().List(ctx, options...)
-		if err != nil {
-			return fmt.Errorf("failed to rorate storage: %w", err)
-		}
-		err = u.Model().Storage().Delete(ctx, objects)
-		if err != nil {
-			return fmt.Errorf("failed to rorate storage: %w", err)
-		}
+	// 条件に合わせてクラウドストレージ上のリソースを走査＆削除する
+	params := []model.RotateParam{urlVal, qtyVal, orderVal}
+	err = u.Model().Storage().Rotate(ctx, params...)
+	if err != nil {
+		return fmt.Errorf("failed to rorate storage: %w", err)
 	}
 
 	return nil

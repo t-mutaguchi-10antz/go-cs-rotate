@@ -39,7 +39,7 @@ func init() {
 func main() {
 	ctx := context.Background()
 
-	// プラットフォーム用のストレージ構造体を生成する
+	// プラットフォームに合ったストレージ構造体を生成する
 	options := []driver.Option{}
 	if args.AWSProfile != "" {
 		options = append(options, driver.WithAWSProfile(args.AWSProfile))
@@ -52,7 +52,7 @@ func main() {
 	// クラウドストレージ上のリソースを条件に合わせて削除する
 	model := domain.NewModel(storage)
 	usecase := usecase.NewUsecase(model)
-	if err := usecase.RotateCloudStorage(ctx, args.URL, args.Quantity, args.Order); err != nil {
+	if err := usecase.RotateStorage(ctx, args.URL, args.Quantity, args.Order); err != nil {
 		log.Fatal(err)
 	}
 }
