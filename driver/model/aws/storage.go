@@ -151,7 +151,9 @@ func (s storage) paginate(
 		if err != nil {
 			return fmt.Errorf("failed to get a page: %w", err)
 		}
-		pageFunc(page)
+		if err := pageFunc(page); err != nil {
+			return fmt.Errorf("failed to process a page: %w", err)
+		}
 	}
 
 	return nil
