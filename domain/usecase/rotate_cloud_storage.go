@@ -9,15 +9,15 @@ import (
 
 func (u usecase) RotateCloudStorage(ctx context.Context, url string, quantity uint, order string) error {
 	// 外部からの入力を domain primitive な値に変換して安全性を担保する
-	urlVal, err := model.URL(url)
+	urlVal, err := model.WithURL(url)
 	if err != nil {
 		return fmt.Errorf("failed to rorate storage: %w", err)
 	}
-	qtyVal, err := model.Quantity(quantity)
+	qtyVal, err := model.WithQuantity(quantity)
 	if err != nil {
 		return fmt.Errorf("failed to rorate storage: %w", err)
 	}
-	orderVal, err := model.Order(order)
+	orderVal, err := model.WithOrder(order)
 	if err != nil {
 		return fmt.Errorf("failed to rorate storage: %w", err)
 	}

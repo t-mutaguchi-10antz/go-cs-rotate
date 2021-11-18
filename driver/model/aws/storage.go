@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"sort"
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/davecgh/go-spew/spew"
 
 	"github.com/t-mutaguchi-10antz/cs-rotate/domain/model"
 )
@@ -19,10 +19,10 @@ type storage struct {
 	client  *s3.Client
 }
 
-func NewStorage(ctx context.Context, verbose bool) (model.Storage, error) {
+func NewStorage(ctx context.Context, verbose bool, profile string) (model.Storage, error) {
 	s := storage{verbose: verbose}
 
-	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion("us-west-2"))
+	cfg, err := config.LoadDefaultConfig(ctx, config.WithSharedConfigProfile(profile))
 	if err != nil {
 		return s, fmt.Errorf("failed to create storage struct: %w", err)
 	}
@@ -33,37 +33,41 @@ func NewStorage(ctx context.Context, verbose bool) (model.Storage, error) {
 }
 
 func (s storage) List(ctx context.Context, options ...model.ListOption) ([]model.Object, []model.ListOption, error) {
-	o := model.NewListOptions(options...)
+	objects := []model.Object{}
 
-	if s.verbose {
-		log.Printf("AWS S3 List objects %s", spew.Sdump(o))
-	}
+	o := model.NewListOptions(options...)
 
 	bucket := o.URL.Bucket()
 	prefix := o.URL.Prefix()
-	params := &s3.ListObjectsInput{
-		Bucket: &bucket,
-		Prefix: &prefix,
-	}
-	optFns := []func(*s3.Options){}
-	output, err := s.client.ListObjects(ctx, params, optFns...)
-	if err != nil {
-		return []model.Object{}, nil, fmt.Errorf("failed to list AWS S3 objects: %w", err)
+	delimiter := "/"
+	params := &s3.ListObjectsV2Input{
+		Bucket:    &bucket,
+		Prefix:    &prefix,
+		Delimiter: &delimiter,
 	}
 
-	objects := []model.Object{}
-	for _, content := range output.Contents {
-		url := ""
-		if output.Prefix != nil {
-			url = fmt.Sprintf("s3://%s/%s/%s", *output.Name, *output.Prefix, *content.Key)
-		} else {
-			url = fmt.Sprintf("s3://%s/%s", *output.Name, *content.Key)
-		}
-		object, err := model.NewObject(url)
+	prefixes := []string{}
+	p := s3.NewListObjectsV2Paginator(s.client, params)
+	for p.HasMorePages() {
+		page, err := p.NextPage(ctx)
 		if err != nil {
-			return []model.Object{}, nil, fmt.Errorf("failed to list AWS S3 objects: %w", err)
+			return objects, nil, fmt.Errorf("failed to get a page: %w", err)
 		}
-		objects = append(objects, object)
+		for _, p := range page.CommonPrefixes {
+			prefixes = append(prefixes, *p.Prefix)
+		}
+	}
+
+	sort.SliceStable(prefixes, func(i, j int) bool {
+		if o.Order != nil && *o.Order == model.OrderAsc {
+			return prefixes[i] < prefixes[j]
+		} else {
+			return prefixes[i] > prefixes[j]
+		}
+	})
+
+	if s.verbose {
+		log.Printf("AWS S3 List prefixes ( bucket: %s, prefix: %s ) %v", bucket, prefix, prefixes)
 	}
 
 	return objects, nil, nil

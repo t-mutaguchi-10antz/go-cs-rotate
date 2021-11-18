@@ -11,7 +11,7 @@ const (
 	PlatformAWS = platform("aws")
 )
 
-func Platform(v string) (platform, error) {
+func WithPlatform(v string) (platform, error) {
 	o := platform(v)
 	switch o {
 	case

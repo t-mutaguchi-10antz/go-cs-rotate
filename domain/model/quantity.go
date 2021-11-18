@@ -8,7 +8,7 @@ import (
 
 type quantity uint
 
-func Quantity(v uint) (quantity, error) {
+func WithQuantity(v uint) (quantity, error) {
 	if err := validator.CheckValue(v, "min=1"); err != nil {
 		return quantity(0), fmt.Errorf("failed to create quantity value: %w", err)
 	}

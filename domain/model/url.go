@@ -8,7 +8,7 @@ import (
 
 type url string
 
-func URL(v string) (url, error) {
+func WithURL(v string) (url, error) {
 	u := url(v)
 
 	if err := validator.CheckValue(&u, "url"); err != nil {
@@ -19,11 +19,11 @@ func URL(v string) (url, error) {
 }
 
 func (u url) Bucket() string {
-	return ""
+	return "resource-dev1.game.prince-royale.jp"
 }
 
 func (u url) Prefix() string {
-	return ""
+	return "AssetBundle/"
 }
 
 func (u url) Key() string {

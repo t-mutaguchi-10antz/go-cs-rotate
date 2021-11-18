@@ -12,7 +12,7 @@ type Object struct {
 }
 
 func NewObject(url string) (Object, error) {
-	urlValue, err := URL(url)
+	urlValue, err := WithURL(url)
 	if err != nil {
 		return Object{}, fmt.Errorf("failed to create object struct: %w", err)
 	}
