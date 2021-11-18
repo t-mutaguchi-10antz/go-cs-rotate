@@ -16,7 +16,7 @@ func CheckStruct(src interface{}) error {
 	}
 
 	if _, ok := err.(*validator.InvalidValidationError); ok {
-		return fmt.Errorf("Invalid struct: %w", err)
+		return fmt.Errorf("invalid struct: %w", err)
 	}
 
 	errs := []string{}
@@ -34,7 +34,7 @@ func CheckStruct(src interface{}) error {
 		errs = append(errs, err.Error())
 	}
 
-	return fmt.Errorf("Invalid struct: %s", strings.Join(errs, " "))
+	return fmt.Errorf("invalid struct: %s", strings.Join(errs, " "))
 }
 
 func CheckValue(src interface{}, tag string) error {
@@ -44,7 +44,7 @@ func CheckValue(src interface{}, tag string) error {
 	}
 
 	if _, ok := err.(*validator.InvalidValidationError); ok {
-		return fmt.Errorf("Invalid value: %w", err)
+		return fmt.Errorf("invalid value: %w", err)
 	}
 
 	errs := []string{}
@@ -52,5 +52,5 @@ func CheckValue(src interface{}, tag string) error {
 		errs = append(errs, err.Error())
 	}
 
-	return fmt.Errorf("Invalid value: %s", strings.Join(errs, " "))
+	return fmt.Errorf("invalid value: %s", strings.Join(errs, " "))
 }

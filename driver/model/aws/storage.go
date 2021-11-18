@@ -24,7 +24,7 @@ func NewStorage(ctx context.Context, verbose bool) (model.Storage, error) {
 
 	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion("us-west-2"))
 	if err != nil {
-		return s, fmt.Errorf("Failed to create storage struct: %w", err)
+		return s, fmt.Errorf("failed to create storage struct: %w", err)
 	}
 
 	s.client = s3.NewFromConfig(cfg)
@@ -32,7 +32,7 @@ func NewStorage(ctx context.Context, verbose bool) (model.Storage, error) {
 	return s, nil
 }
 
-func (s storage) List(ctx context.Context, options ...model.ListOption) ([]model.Object, error) {
+func (s storage) List(ctx context.Context, options ...model.ListOption) ([]model.Object, []model.ListOption, error) {
 	o := model.NewListOptions(options...)
 
 	if s.verbose {
@@ -48,7 +48,7 @@ func (s storage) List(ctx context.Context, options ...model.ListOption) ([]model
 	optFns := []func(*s3.Options){}
 	output, err := s.client.ListObjects(ctx, params, optFns...)
 	if err != nil {
-		return []model.Object{}, fmt.Errorf("Failed to list AWS S3 objects: %w", err)
+		return []model.Object{}, nil, fmt.Errorf("failed to list AWS S3 objects: %w", err)
 	}
 
 	objects := []model.Object{}
@@ -61,12 +61,12 @@ func (s storage) List(ctx context.Context, options ...model.ListOption) ([]model
 		}
 		object, err := model.NewObject(url)
 		if err != nil {
-			return []model.Object{}, fmt.Errorf("Failed to list AWS S3 objects: %w", err)
+			return []model.Object{}, nil, fmt.Errorf("failed to list AWS S3 objects: %w", err)
 		}
 		objects = append(objects, object)
 	}
 
-	return objects, nil
+	return objects, nil, nil
 }
 
 func (s storage) Delete(ctx context.Context, objects []model.Object) error {

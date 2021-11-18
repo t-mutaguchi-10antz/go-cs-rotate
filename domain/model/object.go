@@ -14,7 +14,7 @@ type Object struct {
 func NewObject(url string) (Object, error) {
 	urlValue, err := URL(url)
 	if err != nil {
-		return Object{}, fmt.Errorf("Failed to create object struct: %w", err)
+		return Object{}, fmt.Errorf("failed to create object struct: %w", err)
 	}
 
 	return Object{

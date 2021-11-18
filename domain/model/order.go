@@ -17,6 +17,6 @@ func Order(v string) (order, error) {
 	case OrderAsc, OrderDesc:
 		return o, nil
 	default:
-		return order(""), fmt.Errorf("Failed to create order value: Invalid value")
+		return order(""), fmt.Errorf("failed to create order value: invalid value")
 	}
 }
