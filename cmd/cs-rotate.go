@@ -16,8 +16,8 @@ import (
 var args struct {
 	Platform string
 	URL      string `short:"u" long:"url" required:"true" validate:"url" description:"削除対象の始点となる URL ( protocol://bucket/prefix )"`
-	Quantity uint   `short:"q" long:"quantity" required:"true" validate:"gt=0" description:"ローテートを行わない確保量"`
-	Order    string `short:"o" long:"order" choice:"desc" choice:"asc" default:"desc" description:"確保するにあたって降順か昇順どちらで並べ替えるか"`
+	Quantity uint   `short:"q" long:"quantity" required:"true" validate:"gt=0" description:"ローテートせずに残す量"`
+	Order    string `short:"o" long:"order" choice:"desc" choice:"asc" default:"desc" description:"ローテートせずに残すにあたって降順・昇順どちらで並べ替えるか"`
 	Verbose  bool   `short:"v" long:"verbose" description:"詳細ログを出力するか"`
 }
 
