@@ -7,10 +7,10 @@ import (
 
 	"github.com/jessevdk/go-flags"
 
-	domain "github.com/t-mutaguchi-10antz/cs-rotate/domain/model"
-	"github.com/t-mutaguchi-10antz/cs-rotate/domain/usecase"
-	driver "github.com/t-mutaguchi-10antz/cs-rotate/driver/model"
-	"github.com/t-mutaguchi-10antz/cs-rotate/validator"
+	domain "github.com/t-mutaguchi-10antz/go/cs-rotate/domain/model"
+	"github.com/t-mutaguchi-10antz/go/cs-rotate/domain/usecase"
+	driver "github.com/t-mutaguchi-10antz/go/cs-rotate/driver/model"
+	"github.com/t-mutaguchi-10antz/go/cs-rotate/validator"
 )
 
 var args struct {
@@ -24,20 +24,22 @@ var args struct {
 
 func init() {
 	// コマンドラインからの入力を解析・検証する
-	if _, err := flags.Parse(&args); err != nil {
-		if flagsErr, ok := err.(*flags.Error); ok {
-			if flagsErr.Type == flags.ErrHelp {
-				os.Exit(0)
-			}
-			log.Fatal(flagsErr)
-		}
-		log.Fatal(err)
-	}
-	if err := validator.CheckStruct(&args); err != nil {
-		log.Fatal(err)
+	parser := flags.NewParser(&args, flags.HelpFlag)
+	parser.Name = "cs-rotate"
+	parser.Usage = "PLATFORM[aws] [OPTIONS]"
+	if len(os.Args) == 1 {
+		parser.WriteHelp(os.Stdout)
+		os.Exit(0)
 	}
 	args.Platform = os.Args[1]
 	if _, err := domain.WithPlatform(args.Platform); err != nil {
+		log.Printf("invalid platform: %s", args.Platform)
+		os.Exit(1)
+	}
+	if _, err := parser.Parse(); err != nil {
+		log.Fatal(err)
+	}
+	if err := validator.CheckStruct(&args); err != nil {
 		log.Fatal(err)
 	}
 }
@@ -46,11 +48,11 @@ func main() {
 	ctx := context.Background()
 
 	// プラットフォームに合ったストレージ構造体を生成する
-	options := []driver.Option{}
+	opts := []driver.Option{}
 	if args.AWSProfile != "" {
-		options = append(options, driver.WithAWSProfile(args.AWSProfile))
+		opts = append(opts, driver.WithAWSProfile(args.AWSProfile))
 	}
-	storage, err := driver.NewStorage(ctx, args.Verbose, args.Platform, options...)
+	storage, err := driver.NewStorage(ctx, args.Verbose, args.Platform, opts...)
 	if err != nil {
 		log.Fatal(err)
 	}

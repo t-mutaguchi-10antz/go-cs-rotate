@@ -10,7 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 
-	"github.com/t-mutaguchi-10antz/cs-rotate/domain/model"
+	"github.com/t-mutaguchi-10antz/go/cs-rotate/domain/model"
 )
 
 var _ model.Storage = storage{}
