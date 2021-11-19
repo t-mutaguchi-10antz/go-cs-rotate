@@ -4,7 +4,7 @@ import (
 	"fmt"
 	net_url "net/url"
 
-	"github.com/t-mutaguchi-10antz/go/cs-rotate/validator"
+	"github.com/t-mutaguchi-10antz/go-cs-rotate/validator"
 )
 
 type url string

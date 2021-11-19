@@ -7,10 +7,10 @@ import (
 
 	"github.com/jessevdk/go-flags"
 
-	domain "github.com/t-mutaguchi-10antz/go/cs-rotate/domain/model"
-	"github.com/t-mutaguchi-10antz/go/cs-rotate/domain/usecase"
-	driver "github.com/t-mutaguchi-10antz/go/cs-rotate/driver/model"
-	"github.com/t-mutaguchi-10antz/go/cs-rotate/validator"
+	domain "github.com/t-mutaguchi-10antz/go-cs-rotate/domain/model"
+	"github.com/t-mutaguchi-10antz/go-cs-rotate/domain/usecase"
+	driver "github.com/t-mutaguchi-10antz/go-cs-rotate/driver/model"
+	"github.com/t-mutaguchi-10antz/go-cs-rotate/validator"
 )
 
 var args struct {
