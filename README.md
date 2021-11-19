@@ -9,7 +9,7 @@
 ## Installation
 
 ```bash
-$ go install github.com/t-mutaguchi-10antz/go-cs-rotate@v0.0.1
+$ go install github.com/t-mutaguchi-10antz/go-cs-rotate@latest
 ```
 
 ## Usage
