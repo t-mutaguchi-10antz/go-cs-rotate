@@ -1,4 +1,4 @@
-module github.com/t-mutaguchi-10antz/go-cs-rotate
+module github.com/t-mutaguchi-10antz/go/cs-rotate
 
 go 1.16
 

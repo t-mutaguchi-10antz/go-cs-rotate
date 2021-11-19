@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/t-mutaguchi-10antz/go-cs-rotate/domain/model"
+	"github.com/t-mutaguchi-10antz/go/cs-rotate/domain/model"
 )
 
 func (u usecase) RotateStorage(ctx context.Context, url string, quantity uint, order string) error {

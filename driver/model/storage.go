@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/t-mutaguchi-10antz/go-cs-rotate/domain/model"
-	"github.com/t-mutaguchi-10antz/go-cs-rotate/driver/model/aws"
+	"github.com/t-mutaguchi-10antz/go/cs-rotate/domain/model"
+	"github.com/t-mutaguchi-10antz/go/cs-rotate/driver/model/aws"
 )
 
 func NewStorage(ctx context.Context, verbose bool, platform string, options ...Option) (model.Storage, error) {

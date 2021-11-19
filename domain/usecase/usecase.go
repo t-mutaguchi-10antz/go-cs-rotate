@@ -1,7 +1,7 @@
 package usecase
 
 import (
-	"github.com/t-mutaguchi-10antz/go-cs-rotate/domain/model"
+	"github.com/t-mutaguchi-10antz/go/cs-rotate/domain/model"
 )
 
 type Usecase interface {

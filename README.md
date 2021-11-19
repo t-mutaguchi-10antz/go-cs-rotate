@@ -6,7 +6,7 @@
 
 条件に合わせてクラウドストレージ上のリソースを削除する
 
-## Install
+## Installation
 
 ```bash
 $ go install github.com/t-mutaguchi-10antz/go-cs-rotate@v0.0.1
