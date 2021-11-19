@@ -3,7 +3,7 @@ package model
 import (
 	"fmt"
 
-	"github.com/t-mutaguchi-10antz/cs-rotate/validator"
+	"github.com/t-mutaguchi-10antz/go-cs-rotate/validator"
 )
 
 type quantity uint
