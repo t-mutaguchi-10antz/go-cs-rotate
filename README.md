@@ -19,9 +19,10 @@ Usage:
   cs-rotate PLATFORM[aws] [OPTIONS]
 
 Application Options:
-  -u, --url=             削除対象の基点となる URL ( protocol://bucket/prefix )
+  -u, --url=             削除対象の基点となる URL ( schema://bucket/prefix )
   -q, --quantity=        ローテートせずに残す量
-  -o, --order=[desc|asc] ローテートせずに残すにあたって降順・昇順どちらで並べ替えるか
+  -o, --order=[desc|asc] ローテートせずに残すにあたって降順・昇順どちらで並べ替えるか ( default: desc )
   -v, --verbose          詳細ログを出力するか
+      --version          バージョン
       --aws-profile=     ストレージが AWS S3 の場合は必須, プロファイルを指定する
 ```

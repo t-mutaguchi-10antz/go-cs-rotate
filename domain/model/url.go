@@ -41,7 +41,3 @@ func (u url) Prefix() (string, error) {
 	}
 	return runes, nil
 }
-
-func (u url) Key() (string, error) {
-	return "", nil
-}

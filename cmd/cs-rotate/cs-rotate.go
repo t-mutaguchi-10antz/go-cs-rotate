@@ -19,12 +19,12 @@ var Version string
 
 var args struct {
 	Platform   string
-	URL        string `short:"u" long:"url" required:"true" validate:"url" description:"削除対象の基点となる URL ( protocol://bucket/prefix )"`
+	URL        string `short:"u" long:"url" required:"true" validate:"url" description:"削除対象の基点となる URL ( schema://bucket/prefix )"`
 	Quantity   uint   `short:"q" long:"quantity" required:"true" validate:"gt=0" description:"ローテートせずに残す量"`
-	Order      string `short:"o" long:"order" choice:"desc" choice:"asc" default:"desc" description:"ローテートせずに残すにあたって降順・昇順どちらで並べ替えるか"`
+	Order      string `short:"o" long:"order" choice:"desc" choice:"asc" default:"desc" description:"ローテートせずに残すにあたって降順・昇順どちらで並べ替えるか ( default: desc )"`
 	Verbose    bool   `short:"v" long:"verbose" description:"詳細ログを出力するか"`
-	AWSProfile string `long:"aws-profile" description:"ストレージが AWS S3 の場合は必須, プロファイルを指定する"`
 	Version    bool   `long:"version" description:"バージョン"`
+	AWSProfile string `long:"aws-profile" description:"ストレージが AWS S3 の場合は必須, プロファイルを指定する"`
 }
 
 func init() {
